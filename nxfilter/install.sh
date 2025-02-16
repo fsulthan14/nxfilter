@@ -81,7 +81,7 @@ setcap 'cap_net_bind_service=+ep' "${JAVA_BIN}"
 # Buat service NxFilter
 echo "[INFO] Creating Nxfilter Service..."
 SERVICE_FILE="/etc/systemd/system/nxfilter.service"
-TEMPLATE_FILE="${dirName}/nxfilter.service"
+TEMPLATE_FILE="/tmp/nxfilter/nxfilter/nxfilter.service"
 
 # Pastikan template file ada sebelum sed dijalankan
 if [[ ! -f "${TEMPLATE_FILE}" ]]; then
