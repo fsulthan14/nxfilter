@@ -1,0 +1,1 @@
+{USER_NAME} ALL=(ALL) NOPASSWD: /usr/bin/systemctl * {USER_NAME}

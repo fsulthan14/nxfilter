@@ -11,6 +11,18 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+if [ "$#" -lt 4 ]; then
+   echo [ERROR] Wrong number of arguments
+   echo "Syntax is:"
+   echo "   ${0} <nxfilter-username> <nxfilter-dir> <nxfilter-version>"
+   echo
+   exit 1
+fi
+
+echo
+echo "[INFO] Exec ${0} ${1} ${2} ${3}"
+echo
+
 # Delete service
 if [ -f /etc/systemd/system/${USERNAME}.service ]; then
 	systemctl disable --now ${USERNAME}
@@ -19,8 +31,8 @@ fi
 
 # Installing Dependencies
 echo "[INFO] Installing Dependencies.."
-apt update && apt upgrade -y
-apt install unzip curl cron openjdk-8-jre-headless -y
+DEBIAN_FRONTEND='noninteractive' apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' dist-upgrade --fix-missing
+apt install unzip openjdk-8-jre-headless -y
 
 # Create Users..
 echo "[INFO] Create Nxfilter User.."
