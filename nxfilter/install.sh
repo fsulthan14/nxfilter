@@ -11,7 +11,7 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-if [ "$#" -lt 4 ]; then
+if [ "$#" -lt 3 ]; then
    echo [ERROR] Wrong number of arguments
    echo "Syntax is:"
    echo "   ${0} <nxfilter-username> <nxfilter-dir> <nxfilter-version>"
@@ -60,10 +60,14 @@ chmod +x ${PARENTDIR}/${USERNAME}/bin/*
 chown -R ${USERNAME}.${USERNAME} ${PARENTDIR}/${USERNAME}
 
 # Enable Setcap
+echo "[INFO] Enabling Setcap.."
 JAVA_BIN=$(readlink -f $(which java))
 setcap 'cap_net_bind_service=+ep' ${JAVA_BIN}
 
 # Create nxfilter service
-sed -e "s|{NXFILTER_USER}|${USERNAME}|g" -e "s|{WORK_DIR}|${PARENTDIR}/${USERNAME}|g" ${dirName}/${USERNAME}.service > /etc/systemd/system/${USERNAME}.service
+echo "[INFO] Create Nxfilter Service.."
+sed -e "s|{NXFILTER_USER}|${USERNAME}|g" -e "s|{WORK_DIR}|${PARENTDIR}/${USERNAME}|g" ${dirName}/nxfilter..service > /etc/systemd/system/nxfilter.service
 systemctl daemon-reload
 systemctl enable --now ${USERNAME}
+
+echo "[INFO] Done"
