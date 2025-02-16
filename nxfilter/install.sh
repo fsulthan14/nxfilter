@@ -24,6 +24,11 @@ PARENTDIR="${2}"
 VERSION=${3} # 4.7.1.4
 
 # Delete service
+if systemctl is-enabled nxfilter 2>/dev/null | grep -q "masked"; then
+    echo "[WARNING] nxfilter.service is masked, unmasking..."
+    systemctl unmask nxfilter
+fi
+
 if [ -f /etc/systemd/system/${USERNAME}.service ]; then
 	systemctl disable --now ${USERNAME}
 	rm /etc/systemd/system/${USERNAME}.service
@@ -66,12 +71,16 @@ setcap 'cap_net_bind_service=+ep' ${JAVA_BIN}
 
 # Create nxfilter service
 echo "[INFO] Create Nxfilter Service.."
-sed -e "s|{NXFILTER_USER}|${USERNAME}|g" -e "s|{WORK_DIR}|${PARENTDIR}|g" ${dirName}/nxfilter.service > /etc/systemd/system/nxfilter.service
+SERVICE_FILE="/etc/systemd/system/nxfilter.service"
+TEMPLATE_FILE="${dirName}/nxfilter.service"
 
-if systemctl is-enabled nxfilter 2>/dev/null | grep -q "masked"; then
-    echo "[WARNING] nxfilter.service is masked, unmasking..."
-    systemctl unmask nxfilter
+# Pastikan template file ada sebelum sed dijalankan
+if [[ ! -f "${TEMPLATE_FILE}" ]]; then
+    echo "[ERROR] Template file ${TEMPLATE_FILE} not found!"
+    exit 1
 fi
+
+sed -e "s|{NXFILTER_USER}|${USERNAME}|g" -e "s|{WORK_DIR}|${PARENTDIR}|g" ${dirName}/nxfilter.service > /etc/systemd/system/nxfilter.service
 
 systemctl daemon-reload
 systemctl enable --now ${USERNAME}
