@@ -1,0 +1,19 @@
+[Unit]
+Description=NxFilter DNS Filter
+After=network.target
+
+[Service]
+Type=forking
+User={NXFILTER_USER}
+Group={NXFILTER_USER}
+WorkingDirectory={WORK_DIR}/{NXFILTER_USER}
+ExecStart={WORK_DIR}/{NXFILTER_USER}/bin/startup.sh -d
+ExecStop={WORK_DIR}/{NXFILTER_USER}/bin/shutdown.sh
+Restart=always
+RestartSec=5
+LimitNOFILE=4096
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target
