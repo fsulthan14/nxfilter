@@ -25,7 +25,6 @@ PARENTDIR=${2}
 VERSION=${3}
 
 # Update System
-apt get -y update
 DEBIAN_FRONTEND='noninteractive' apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' dist-upgrade --fix-missing
 
 # Installing Nxfilter

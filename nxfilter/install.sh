@@ -1,10 +1,5 @@
 #!/bin/bash
 
-dirName=$(dirname "$0")
-USERNAME="${1}"
-PARENTDIR="${2}"
-VERSION=${3} # 4.7.1.4
-
 # Check if script is run as root
 if [[ $EUID -ne 0 ]]; then
   echo "[ERROR] This script must be run as root!" >&2
@@ -22,6 +17,11 @@ fi
 echo
 echo "[INFO] Exec ${0} ${1} ${2} ${3}"
 echo
+
+dirName=$(dirname "$0")
+USERNAME="${1}"
+PARENTDIR="${2}"
+VERSION=${3} # 4.7.1.4
 
 # Delete service
 if [ -f /etc/systemd/system/${USERNAME}.service ]; then
