@@ -66,7 +66,7 @@ setcap 'cap_net_bind_service=+ep' ${JAVA_BIN}
 
 # Create nxfilter service
 echo "[INFO] Create Nxfilter Service.."
-sed -e "s|{NXFILTER_USER}|${USERNAME}|g" -e "s|{WORK_DIR}|${PARENTDIR}/${USERNAME}|g" ${dirName}/nxfilter..service > /etc/systemd/system/nxfilter.service
+sed -e "s|{NXFILTER_USER}|${USERNAME}|g" -e "s|{WORK_DIR}|${PARENTDIR}|g" ${dirName}/nxfilter.service > /etc/systemd/system/nxfilter.service
 systemctl daemon-reload
 systemctl enable --now ${USERNAME}
 
